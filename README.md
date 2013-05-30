@@ -1,4 +1,4 @@
-bsblackjack
-===========
+Blackjack
+=========
 
-Blackjack webapp written in Ruby and Sinatra.
+Blackjack webapp written in Ruby using Sinatra

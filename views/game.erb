@@ -1,0 +1,64 @@
+<%if @loss_alert %>
+	<div class="alert alert-error"><%=@loss_alert%></div>
+<%elsif @win_alert %>
+	<div class="alert alert-info"><%=@win_alert%></div>
+<%elsif @push_alert %>
+	<div class="alert"><%=@push_alert%></div>
+<% else %>
+	<div class="alert"></div>
+<% end %>
+
+<div class="well" id="table">
+	<div align="center" >
+		<span style="color: #fff;"><strong>Dealer: </strong>
+			<% if !@hide_dealer_card %>
+				<span class="label label-info"><%= calculate_hand_total(session[:dealer_hand]) %></span> </span>
+			<% end %>
+		</br>
+	  <% session[:dealer_hand].each_with_index do |card, i| %>
+		  <% if @hide_dealer_card && i == 1 %>
+		  	<img src="/images/cards/Cardback_Blue.png" height="9%" width="9%">
+		  <% else %>
+		    <%= get_card_image(card) %>
+		  <% end %>
+	  <% end %>
+ 	</div>
+
+	<br/>
+
+	<div class="player_hand_center" align="center">
+		<span class="label label-info"><%= calculate_hand_total(session[:player_hand]) %></span>
+		</br>
+	  <% session[:player_hand].each do |card| %>
+	    <%= get_card_image(card) %>
+	  <% end %>
+	  <div align="center" id="bet_position">
+			<span class="badge badge-inverse" id="bet_circle">$<%= session[:player_winnings] %></span>
+		</div>
+	</div>
+</div>
+
+<div class="well" id="bottom_well">
+	<% if @show_hit_and_stay %>
+		<div align="center" >
+			<div id="action_buttons" class="btn-group">
+				<a id='hit_button' href="/game/player_hit" class="btn btn-primary">HIT</a>
+				<a id='stay_button' href="/game/player_stay" class="btn btn-danger">STAY</a>
+				<a id='double_button' href="/game/player_double" class="btn btn-primary">DOUBLE</a>
+			</div>
+		</div>
+	<% end %>
+
+	<div align="center">
+		<% if @show_play_again %>
+			<div class="btn-group">
+		    <strong>BANKROLL: $<%= session[:player_bankroll] %></strong>
+		    <a href="/game" class="btn btn-primary">Deal <i class="icon-repeat icon-white"></i> </a>
+		    <a href="/bet" class="btn btn-primary">Change Bet</a>
+		    <a href="/game_over" class="btn btn-inverse">Quit</a>
+		  </div>
+		<% end %>
+	</div>
+</div>
+
+

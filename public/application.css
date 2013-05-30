@@ -1,0 +1,72 @@
+img {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.well#table {
+	background-image:url('/images/blackjack_table_BG.png');
+	min-height: 570px;
+	max-width: 892px;
+
+}
+
+.well#splash {
+	background-image:url('/images/Blackjack_board.JPG');
+	min-height: 550px;
+	width: 890px;
+}
+
+.set_username {
+	padding-top: 400px;
+	padding-left: 580px;
+	color: #fff;
+}
+
+.player_hand_center {
+	padding-top: 100px;
+	vertical-align: top;
+	max-height: 460px;
+	padding-left: 20px;
+}
+
+.btn#hit_button {
+	width: 75px;
+}
+
+.btn#stay_button {
+	width: 75px;
+}
+
+.btn#double_button {
+	width: 75px;
+}
+
+.well#bottom_well {
+	max-width: 892px;
+}
+
+.badge#bet_circle {
+	border-radius: 50px;
+}
+
+.label#bet_circle, .badge#bet_circle {
+	line-height: 50px;
+	width: 40px;
+}
+
+div#bet_position {
+	padding-top: 45px;
+	padding-right: 10px;
+}
+
+form#bet_form {
+	margin-bottom: 0px;
+}
+
+.input-prepend {
+	padding-left: 20px;
+}
+
+.alert {
+	width: 882px;
+}
