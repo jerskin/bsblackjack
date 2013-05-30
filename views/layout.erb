@@ -7,13 +7,11 @@
   </head>
   <body style="padding-top: 50px;">
 
-    <div class="navbar navbar-fixed-top">
+    <div id="navbar" class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-            <ul class="nav">
-              <li><a href="/set_username">New Game</a></li>
-            </ul>
-            <%= session[:player_bankroll] %>
+          <a class="brand">Bootstrap Blackjack</a>
+          <a id="new_game_button" class="btn btn-danger" href="/set_username">New Game</a></li>
         </div>
       </div>
     </div>

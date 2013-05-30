@@ -5,7 +5,7 @@
 <%elsif @push_alert %>
 	<div class="alert"><%=@push_alert%></div>
 <% else %>
-	<div class="alert"></div>
+	<div class="alert alert-info"><strong>BANKROLL: </strong><%= session[:player_bankroll] - session[:player_winnings] %></div>
 <% end %>
 
 <div class="well" id="table">
@@ -44,7 +44,7 @@
 			<div id="action_buttons" class="btn-group">
 				<a id='hit_button' href="/game/player_hit" class="btn btn-primary">HIT</a>
 				<a id='stay_button' href="/game/player_stay" class="btn btn-danger">STAY</a>
-				<a id='double_button' href="/game/player_double" class="btn btn-primary">DOUBLE</a>
+				<a id='double_button' href="/game/player_double" class="btn btn-success">DOUBLE</a>
 			</div>
 		</div>
 	<% end %>

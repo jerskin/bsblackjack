@@ -7,13 +7,14 @@ img {
 	background-image:url('/images/blackjack_table_BG.png');
 	min-height: 570px;
 	max-width: 892px;
+	margin-bottom: 0px;
 
 }
 
 .well#splash {
 	background-image:url('/images/Blackjack_board.JPG');
 	min-height: 550px;
-	width: 890px;
+	width: 895px;
 }
 
 .set_username {
@@ -70,3 +71,9 @@ form#bet_form {
 .alert {
 	width: 882px;
 }
+
+.btn#new_game_button {
+	float: right;
+}
+
+
