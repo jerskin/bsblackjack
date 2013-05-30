@@ -124,9 +124,8 @@ get '/game' do
   if session[:player_bankroll] <= 0
     @error = "Looks like you're out of cash...but you can always start a new game."
     halt erb(:game_over)
-  elsif session[:player_bankroll] < session[:player_bet]
-    @error = "You entered a bet amount that exceeded your bankroll.  You may only bet up to $#{session[:player_bankroll]}."
-    halt erb(:bet)
+  elsif  session[:player_bankroll] < session[:player_bet]
+    session[:player_bet] = session[:player_bankroll]
   end
 
   @hide_dealer_card = true
