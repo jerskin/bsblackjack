@@ -1,6 +1,5 @@
 #TODO: fix out of bankroll bug, split, double, insurance, surrender, dealer blackjack
 
-
 require 'rubygems'
 require 'sinatra'
 
@@ -39,30 +38,32 @@ helpers do
   end
 
   def player_wins(message)
+    if @player_has_blackjack == true
+      session[:player_winnings] = (session[:player_winnings]*1.50).to_i
+      session[:player_bankroll] += session[:player_winnings].to_i
+    else
+      session[:player_bankroll] += session[:player_winnings].to_i
+    end
+
     @show_play_again = true
     @show_hit_and_stay = false
     @hide_dealer_card = false
-    @win_alert = "<strong>***WIN*** </strong> #{message}"
-    if @player_has_blackjack == true
-      session[:player_bankroll] += session[:player_winnings]*1.5
-    else
-      session[:player_bankroll] += session[:player_winnings]
-    end
+    @win_alert = "#{message} <strong>*** WIN $#{session[:player_winnings]} *** Bankroll: $#{session[:player_bankroll]}</strong>"
   end
 
   def player_loses(message)
+    session[:player_bankroll] -= session[:player_winnings]
     @show_play_again = true
     @show_hit_and_stay = false
     @hide_dealer_card = false
-    @loss_alert = "<strong>---LOSE--- </strong> #{message}"
-    session[:player_bankroll] -= session[:player_winnings]
+    @loss_alert = "#{message} <strong>--- LOSE $#{session[:player_winnings]} --- Bankroll: $#{session[:player_bankroll]}</strong>"
   end
 
   def player_ties(message)
     @show_play_again = true
     @show_hit_and_stay = false
     @hide_dealer_card = false
-    @push_alert = "<strong>PUSH. </strong> #{message}"
+    @push_alert = "#{message} <strong>=== PUSH === Bankroll: $#{session[:player_bankroll]}</strong>"
   end
 end
 
@@ -95,9 +96,14 @@ post '/set_username' do
 end
 
 get '/bet' do
-   session[:player_bet] = nil
-   session[:player_winnings] = nil
-   erb :bet
+  if session[:player_bankroll] <= 0
+    @error = "Looks like you're out of cash...but you can always start a new game."
+    halt erb(:game_over)
+  end
+
+  session[:player_bet] = nil
+  session[:player_winnings] = nil
+  erb :bet
 end
 
 post '/bet' do
@@ -116,7 +122,8 @@ end
 
 get '/game' do
   if session[:player_bankroll] <= 0
-    redirect '/game_over'
+    @error = "Looks like you're out of cash...but you can always start a new game."
+    halt erb(:game_over)
   end
 
   @hide_dealer_card = true
@@ -148,12 +155,12 @@ get '/game' do
 
   #initial check for BJ for both dealer and player
   if player_hand_total == BLACKJACK_AMOUNT && dealer_hand_total == BLACKJACK_AMOUNT
-    player_ties("Both #{session[:username]} and the dealer have Blackjack.")
+    player_ties("Both #{session[:username]} and the dealer have Blackjack")
   elsif player_hand_total == BLACKJACK_AMOUNT
     @player_has_blackjack = true
     player_wins("#{session[:username]} has Blackjack!")
   elsif dealer_hand_total == BLACKJACK_AMOUNT
-    player_loses("Dealer has Blackjack.")
+    player_loses("Dealer has Blackjack")
   end
 
   erb :game
@@ -166,7 +173,7 @@ get '/game/player_hit' do
   player_hand_total = calculate_hand_total(session[:player_hand])
   
   if player_hand_total > BLACKJACK_AMOUNT
-      player_loses("BUSTED.")
+      player_loses("Busted!")
   end
 
   if player_hand_total == BLACKJACK_AMOUNT
@@ -186,7 +193,7 @@ get '/game/player_double' do
   player_hand_total = calculate_hand_total(session[:player_hand])
   
   if player_hand_total > BLACKJACK_AMOUNT
-    player_loses("BUSTED.")
+    player_loses("Busted!")
     erb :game
   else
     redirect '/game/dealer'
@@ -221,11 +228,11 @@ get '/game/results' do
   dealer_hand_total = calculate_hand_total(session[:dealer_hand])
 
   if player_hand_total < dealer_hand_total
-    player_loses("#{session[:username]} has #{player_hand_total}, while the dealer has #{dealer_hand_total}.")
+    player_loses("#{session[:username]} has #{player_hand_total}, while the dealer has #{dealer_hand_total}")
   elsif player_hand_total > dealer_hand_total
-    player_wins("#{session[:username]} has #{player_hand_total}, while the dealer has #{dealer_hand_total}.")
+    player_wins("#{session[:username]} has #{player_hand_total}, while the dealer has #{dealer_hand_total}")
   else
-    player_ties("Both #{session[:username]} and the dealer have #{player_hand_total}.")
+    player_ties("Both #{session[:username]} and the dealer have #{player_hand_total}")
   end
 
   erb :game

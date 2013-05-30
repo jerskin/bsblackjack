@@ -1,4 +1,4 @@
-<div class="alert alert-info">Please enter a bet below.</div>
+<div class="alert alert-info"><strong><%= session[:username] %>, please make a bet.  Your current bankroll is $<%= session[:player_bankroll] %>.</strong></div>
 
 <div class="well" id="table">
 </div>
@@ -7,7 +7,7 @@
 	<div align="center">
 		<form class="form-inline" action='/bet' method='post' id="bet_form">
 		  <div class="input-prepend">
-  			<span class="add-on">$</span>
+  			<span id="add-on" class="add-on">$</span>
   			<div class="input-append">
 	  			<input class="span2" type="text" placeholder="Bet Amount" name="bet">
 	  			<input type="submit" value="Deal" class="btn btn-primary">

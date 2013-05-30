@@ -1,18 +1,18 @@
 <%if @loss_alert %>
 	<div class="alert alert-error"><%=@loss_alert%></div>
 <%elsif @win_alert %>
-	<div class="alert alert-info"><%=@win_alert%></div>
+	<div class="alert alert-success"><%=@win_alert%></div>
 <%elsif @push_alert %>
 	<div class="alert"><%=@push_alert%></div>
 <% else %>
-	<div class="alert alert-info"><strong>BANKROLL: </strong><%= session[:player_bankroll] - session[:player_winnings] %></div>
+	<div class="alert alert-info"><strong>Bankroll: $<%= session[:player_bankroll] - session[:player_winnings] %></strong></div>
 <% end %>
 
 <div class="well" id="table">
-	<div align="center" >
+	<div id="dealer_hand" align="center" >
 		<span style="color: #fff;"><strong>Dealer: </strong>
 			<% if !@hide_dealer_card %>
-				<span class="label label-info"><%= calculate_hand_total(session[:dealer_hand]) %></span> </span>
+				<span class="label label-info"><%= calculate_hand_total(session[:dealer_hand]) %></span></span>
 			<% end %>
 		</br>
 	  <% session[:dealer_hand].each_with_index do |card, i| %>
@@ -27,13 +27,20 @@
 	<br/>
 
 	<div class="player_hand_center" align="center">
-		<span class="label label-info"><%= calculate_hand_total(session[:player_hand]) %></span>
+		<span style="color: #fff;"><strong><%= session[:username] %>:</strong>
+		<span class="label label-info"><%= calculate_hand_total(session[:player_hand]) %></span></span>
 		</br>
 	  <% session[:player_hand].each do |card| %>
 	    <%= get_card_image(card) %>
 	  <% end %>
 	  <div align="center" id="bet_position">
-			<span class="badge badge-inverse" id="bet_circle">$<%= session[:player_winnings] %></span>
+			<span class="badge badge-inverse" id="bet_circle">$
+				<% if @player_has_blackjack %>
+					<%= session[:player_bet] %>
+				<% else %>
+					<%= session[:player_winnings] %>
+				<% end %>
+			</span>
 		</div>
 	</div>
 </div>
@@ -42,9 +49,11 @@
 	<% if @show_hit_and_stay %>
 		<div align="center" >
 			<div id="action_buttons" class="btn-group">
-				<a id='hit_button' href="/game/player_hit" class="btn btn-primary">HIT</a>
-				<a id='stay_button' href="/game/player_stay" class="btn btn-danger">STAY</a>
-				<a id='double_button' href="/game/player_double" class="btn btn-success">DOUBLE</a>
+				<a id='hit_button' href="/game/player_hit" class="btn btn-primary">Hit</a>
+				<a id='stay_button' href="/game/player_stay" class="btn btn-danger">Stay</a>
+				<% if (session[:player_bankroll] - session[:player_bet]) >= session[:player_bet] %>
+					<a id='double_button' href="/game/player_double" class="btn btn-success">Double</a>
+				<% end %>
 			</div>
 		</div>
 	<% end %>
