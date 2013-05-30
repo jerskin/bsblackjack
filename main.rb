@@ -155,6 +155,13 @@ get '/game' do
   player_hand_total = calculate_hand_total(session[:player_hand])
   dealer_hand_total = calculate_hand_total(session[:dealer_hand])
 
+  #Offer insurance to player if dealer shows an Ace
+  #if 'A'.include? session[:dealer_hand][0][0]
+  #  @push_alert = "Dealer shows an Ace.  Would you like to buy insurance?"
+  #  @offer_insurance = true
+  #  erb :game
+  #end 
+
   #initial check for BJ for both dealer and player
   if player_hand_total == BLACKJACK_AMOUNT && dealer_hand_total == BLACKJACK_AMOUNT
     player_ties("Both #{session[:username]} and the dealer have Blackjack")
@@ -182,7 +189,7 @@ get '/game/player_hit' do
     redirect '/game/dealer'
   end
 
-  erb :game
+  erb :game, layout: false
 end
 
 get '/game/player_stay' do
@@ -196,7 +203,7 @@ get '/game/player_double' do
   
   if player_hand_total > BLACKJACK_AMOUNT
     player_loses("Busted!")
-    erb :game
+    erb :game, layout: false
   else
     redirect '/game/dealer'
   end
@@ -219,7 +226,7 @@ get '/game/dealer' do
     redirect '/game/results'
   end
 
-  erb :game
+  erb :game, layout: false
 end
 
 get '/game/results' do
@@ -237,7 +244,7 @@ get '/game/results' do
     player_ties("Both #{session[:username]} and the dealer have #{player_hand_total}")
   end
 
-  erb :game
+  erb :game, layout: false
 end
 
 get '/game_over' do
