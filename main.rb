@@ -1,4 +1,4 @@
-#TODO: fix out of bankroll bug, split, double, insurance, surrender, dealer blackjack
+#TODO: split, insurance, surrender, slow down the display of the dealer drawing
 
 require 'rubygems'
 require 'sinatra'
@@ -155,13 +155,6 @@ get '/game' do
   player_hand_total = calculate_hand_total(session[:player_hand])
   dealer_hand_total = calculate_hand_total(session[:dealer_hand])
 
-  #Offer insurance to player if dealer shows an Ace
-  #if 'A'.include? session[:dealer_hand][0][0]
-  #  @push_alert = "Dealer shows an Ace.  Would you like to buy insurance?"
-  #  @offer_insurance = true
-  #  erb :game
-  #end 
-
   #initial check for BJ for both dealer and player
   if player_hand_total == BLACKJACK_AMOUNT && dealer_hand_total == BLACKJACK_AMOUNT
     player_ties("Both #{session[:username]} and the dealer have Blackjack")
@@ -173,7 +166,6 @@ get '/game' do
   end
 
   erb :game
-
 end
 
 get '/game/player_hit' do
@@ -216,8 +208,8 @@ get '/game/dealer' do
   dealer_hand_total = calculate_hand_total(session[:dealer_hand])
 
   while dealer_hand_total < DEALER_STAND_AMOUNT
-    session[:dealer_hand] << session[:deck].pop
-    dealer_hand_total = calculate_hand_total(session[:dealer_hand])
+   session[:dealer_hand] << session[:deck].pop
+   dealer_hand_total = calculate_hand_total(session[:dealer_hand])
   end
 
   if dealer_hand_total > BLACKJACK_AMOUNT

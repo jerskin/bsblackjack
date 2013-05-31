@@ -6,13 +6,14 @@ $(document).ready(function() {
 
 function player_hit () {
   $(document).on("click", ".btn#hit_button", function() {  
-    alert("player hits!");
-    $.ajax({
-      type: "GET",
-      url: "/game/player_hit"
-    }).done(function(msg) {
-      $("#game").replaceWith(msg)
-    });
+    setTimeout(function() {
+      $.ajax({
+        type: "GET",
+        url: "/game/player_hit"
+      }).done(function(msg) {
+        $("#game").replaceWith(msg)
+      });      
+    }, 500);
 
     return false;
   });
@@ -20,7 +21,6 @@ function player_hit () {
 
 function player_stay () {
   $(document).on("click", ".btn#stay_button", function() {  
-    alert("player stays!");
     $.ajax({
       type: "GET",
       url: "/game/player_stay"
@@ -34,7 +34,6 @@ function player_stay () {
 
 function player_double () {
   $(document).on("click", ".btn#double_button", function() {  
-    alert("player doubles down!");
     $.ajax({
       type: "GET",
       url: "/game/player_double"
